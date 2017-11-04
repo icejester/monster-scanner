@@ -1,12 +1,14 @@
 
 // Pin 13 has an LED connected on most Arduino boards:
+// use this pin to give device status
+// BEGIN STATUS LIGHT GLOBAL VARS...
 int STATUSLIGHT = 13;
-
-int counter = 25;
-
+int STATBRIGHTNESS = 25;
 int MAXBRIGHTNESS = 250;
 int MINBRIGHTNESS = 25;
-int DIRECTION = 1; // 1 is up, 0 is down
+int STATDIRECTION = 1; // 1 is up, 0 is down
+// END STATUS LIGHT GLOBAL VARS...
+
 
 void setup()
 {  // initialize the digital pin as an output.
@@ -22,24 +24,23 @@ void loop()
 
 void pulseStatus()
 {
-  if (counter < MINBRIGHTNESS)
+  if (STATBRIGHTNESS < MINBRIGHTNESS)
   {
-    DIRECTION = 1;
+    STATDIRECTION = 1;
   }
-  else if (counter > MAXBRIGHTNESS)
+  else if (STATBRIGHTNESS > MAXBRIGHTNESS)
   {
-    DIRECTION = 0;
+    STATDIRECTION = 0;
   }
 
-  if (DIRECTION > 0)
+  if (STATDIRECTION > 0)
   {
-    counter += 5;
+    STATBRIGHTNESS += 5;
   }
   else
   {
-    counter -= 5;
+    STATBRIGHTNESS -= 5;
   }
-  
-  analogWrite(STATUSLIGHT, counter);
+  analogWrite(STATUSLIGHT, STATBRIGHTNESS);
 }
 
