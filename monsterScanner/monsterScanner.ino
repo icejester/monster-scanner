@@ -20,12 +20,16 @@ int STATDIRECTION = 1; // 1 is up, 0 is down
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(16, SIGNALPIN, NEO_RGBW + NEO_KHZ800);
-
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 // END SCANNER ARRAY GLOBAL VARS...
+
+// BEGIN BUTTON GLOBAL VARS...
+#define BUTTONPIN  9
+int buttonState = 0;
+// END BUTTON GLOBAL VARS...
 
 void setup()
 {  // initialize the digital pin as an output.
@@ -34,15 +38,23 @@ void setup()
   strip.begin();
   strip.setBrightness(5);
   strip.show();
+
+  pinMode(BUTTONPIN, INPUT);
+  digitalWrite(BUTTONPIN, HIGH);
+  
 }
 
 void loop()
 {
   pulseStatus();
 
-  scanning();
-  
-  allClear();
+  buttonState = digitalRead(BUTTONPIN);
+
+  if(buttonState == LOW)
+  {
+    scanning();
+    allClear();
+  }
   
   delay(20);
 }
